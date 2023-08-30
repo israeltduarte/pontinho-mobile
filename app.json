@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "pontinho",
-    "slug": "pontinho",
+    "name": "pontinho-mobile",
+    "slug": "pontinho-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
