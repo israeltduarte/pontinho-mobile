@@ -1,49 +1,48 @@
 {
-    "players": [
-      {
-        "id": "player1",
-        "name": "Israel",
-        "points": [],
-        "total": 0,
-        "scape": 99,
-        "hasExploded": false,
-        "hasExplodedWith": 0,
-        "isBackWith": 0,
-        "isPlaying": true
-      },
-      {
-        "id": "player2",
-        "name": "Gabrielle",
-        "points": [],
-        "total": 0,
-        "scape": 99,
-        "hasExploded": false,
-        "hasExplodedWith": 0,
-        "isBackWith": 0,
-        "isPlaying": true
-      },
-      {
-        "id": "player3",
-        "name": "Clarissa",
-        "points": [],
-        "total": 0,
-        "scape": 99,
-        "hasExploded": false,
-        "hasExplodedWith": 0,
-        "isBackWith": 0,
-        "isPlaying": true
-      },
-      {
-        "id": "player4",
-        "name": "Bernardo",
-        "points": [],
-        "total": 0,
-        "scape": 99,
-        "hasExploded": false,
-        "hasExplodedWith": 0,
-        "isBackWith": 0,
-        "isPlaying": true
-      }
-    ]
-  }
-  
+  "players": [
+    {
+      "id": "player1",
+      "name": "Israel",
+      "points": [10, 94, 30],
+      "total": 0,
+      "scape": 99,
+      "hasExploded": true,
+      "hasExplodedWith": 104,
+      "isBackWith": 0,
+      "isPlaying": true
+    },
+    {
+      "id": "player2",
+      "name": "Gabrielle",
+      "points": [10, 20, 30],
+      "total": 0,
+      "scape": 99,
+      "hasExploded": false,
+      "hasExplodedWith": 0,
+      "isBackWith": 0,
+      "isPlaying": true
+    },
+    {
+      "id": "player3",
+      "name": "Clarissa",
+      "points": [10, 20, 30],
+      "total": 0,
+      "scape": 99,
+      "hasExploded": false,
+      "hasExplodedWith": 0,
+      "isBackWith": 0,
+      "isPlaying": true
+    },
+    {
+      "id": "player4",
+      "name": "Bernardo",
+      "points": [10, 20, 30],
+      "total": 0,
+      "scape": 99,
+      "hasExploded": false,
+      "hasExplodedWith": 0,
+      "isBackWith": 0,
+      "isPlaying": true
+    }
+  ]
+}

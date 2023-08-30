@@ -128,42 +128,6 @@ const App = () => {
   };
 
   return (
-    // <View style={{ flex: 1, padding: 16 }}>
-    //   {players.map((player, index) => (
-    //     <View
-    //       key={index}
-    //       style={{
-    //         borderWidth: 1,
-    //         borderColor: player.hasExploded ? "red" : "green",
-    //         padding: 8,
-    //         marginBottom: 8,
-    //       }}
-    //     >
-    //       <Text>{player.name}</Text>
-    //       <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text>
-    //       <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text>
-    //       {player.hasExplodedWith && (
-    //         <View>
-    //           <Text>Estourou com: {player.hasExplodedWith}</Text>
-    //           <Text>Voltou com: {player.isBackWith}</Text>
-    //         </View>
-    //       )}
-    //       <Text>Total: {player.total}</Text>
-    //       <Text>Escape: {player.scape}</Text>
-    //       {player.points.map((point, index) => (
-    //         <Text key={index}>{point}</Text>
-    //       ))}
-    //       <View style={{ marginTop: 8 }}>
-    //         <TextInput
-    //           keyboardType="numeric"
-    //           placeholder="Enter score"
-    //           onChangeText={enableSubmitButton}
-    //           editable={player.isPlaying}
-    //         />
-    //       </View>
-    //     </View>
-    //   ))}
-    // </View>
     <View
       style={{
         flex: 1,
@@ -171,7 +135,38 @@ const App = () => {
         alignItems: "center",
       }}
     >
-      <Text>Test</Text>
+      {players.map((player, index) => (
+        <View
+          key={index}
+          style={{
+            borderWidth: 1,
+            borderColor: player.hasExploded ? "red" : "green",
+            padding: 8,
+            marginBottom: 8,
+          }}
+        >
+          <Text>{player.name}</Text>
+          <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text>
+          <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text>
+          {player.hasExploded && (
+            <View>
+              <Text>Estourou com: {player.hasExplodedWith}</Text>
+              <Text>Voltou com: {player.isBackWith}</Text>
+            </View>
+          )}
+          <Text>Total: {player.total}</Text>
+          <Text>Escape: {player.scape}</Text>
+          {player.points.map((point, index) => (
+            <Text key={index}>{point}</Text>
+          ))}
+          <TextInput
+            keyboardType="numeric"
+            placeholder="Enter score"
+            onChangeText={enableSubmitButton}
+            editable={player.isPlaying}
+          />
+        </View>
+      ))}
       <Button
         title="Finalizar rodada"
         onPress={submitScores}
