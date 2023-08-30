@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import data from "./api/data.json";
 
 const App = () => {
@@ -9,6 +16,7 @@ const App = () => {
   const [canSubmit, setCanSubmit] = useState(false);
   const [highestTotal, setHighestTotal] = useState(0);
   const [roundWinner, setRoundWinner] = useState(null);
+  const [scores, setScores] = useState({}); // Store input values
 
   const submitScores = () => {
     if (canSubmit) {
@@ -111,62 +119,100 @@ const App = () => {
       }, 0);
   };
 
-  const enableSubmitButton = () => {
-    setCanSubmit(
-      players
-        .filter((player) => player.isPlaying)
-        .every((player) => {
-          const inputValue = getInputValue(player.id);
-          return inputValue !== "" && inputValue !== null;
-        })
-    );
-  };
-
   const clearNewScoreField = (player) => {
     // Implement your logic to clear input field
     enableSubmitButton();
   };
 
+  const handleScoreChange = (playerId, score) => {
+    setScores((prevScores) => ({
+      ...prevScores,
+      [playerId]: score,
+    }));
+  };
+
+  const handleScoreBlur = () => {
+    enableSubmitButton();
+  };
+
+  const enableSubmitButton = () => {
+    const allInputsFilled = players
+      .filter((player) => player.isPlaying)
+      .every((player) => {
+        const inputValue = scores[player.id];
+        return inputValue !== "" && inputValue !== null && !isNaN(inputValue);
+      });
+
+    setCanSubmit(allInputsFilled);
+  };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+    },
+    scrollViewContent: {
+      flexGrow: 1,
+    },
+    playersRow: {
+      flexDirection: "row",
+      marginBottom: 16,
+    },
+    playerContainer: {
+      flex: 1,
+      borderWidth: 1,
+      padding: 8,
+      marginRight: 8,
+      alignItems: "center",
+    },
+  });
+
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      {players.map((player, index) => (
-        <View
-          key={index}
-          style={{
-            borderWidth: 1,
-            borderColor: player.hasExploded ? "red" : "green",
-            padding: 8,
-            marginBottom: 8,
-          }}
-        >
-          <Text>{player.name}</Text>
-          <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text>
-          <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text>
-          {player.hasExploded && (
-            <View>
-              <Text>Estourou com: {player.hasExplodedWith}</Text>
-              <Text>Voltou com: {player.isBackWith}</Text>
+    <View style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        horizontal={true}
+      >
+        <View style={styles.playersRow}>
+          {players.map((player, index) => (
+            <View
+              key={index}
+              style={{
+                borderColor: player.hasExploded ? "red" : "green",
+                padding: 8,
+                marginBottom: 8,
+                marginRight: 8,
+                flexDirection: "column", // Vertically align elements
+                borderWidth: 1,
+                alignItems: "center",
+              }}
+            >
+              <Text>{player.name}</Text>
+              <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text>
+              <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text>
+              {player.hasExploded && (
+                <View>
+                  <Text>Estourou com: {player.hasExplodedWith}</Text>
+                  <Text>Voltou com: {player.isBackWith}</Text>
+                </View>
+              )}
+              <Text>Total: {player.total}</Text>
+              <Text>Escape: {player.scape}</Text>
+              {player.points.map((point, index) => (
+                <Text key={index}>{point}</Text>
+              ))}
+              <TextInput
+                keyboardType="numeric"
+                placeholder="Enter score"
+                onChangeText={(text) => handleScoreChange(player.id, text)}
+                onBlur={handleScoreBlur}
+                value={scores[player.id] || ""}
+                editable={player.isPlaying}
+              />
             </View>
-          )}
-          <Text>Total: {player.total}</Text>
-          <Text>Escape: {player.scape}</Text>
-          {player.points.map((point, index) => (
-            <Text key={index}>{point}</Text>
           ))}
-          <TextInput
-            keyboardType="numeric"
-            placeholder="Enter score"
-            onChangeText={enableSubmitButton}
-            editable={player.isPlaying}
-          />
         </View>
-      ))}
+      </ScrollView>
       <Button
         title="Finalizar rodada"
         onPress={submitScores}

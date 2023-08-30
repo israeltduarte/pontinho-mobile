@@ -3,11 +3,11 @@
     {
       "id": "player1",
       "name": "Israel",
-      "points": [10, 94, 30],
+      "points": [10, 20, 30],
       "total": 0,
       "scape": 99,
-      "hasExploded": true,
-      "hasExplodedWith": 104,
+      "hasExploded": false,
+      "hasExplodedWith": 0,
       "isBackWith": 0,
       "isPlaying": true
     },
