@@ -19,23 +19,41 @@ const App = () => {
   const [scores, setScores] = useState({}); // Store input values
 
   const submitScores = () => {
-    if (canSubmit) {
-      updateRoundScores();
+    if (canSubmit && checkIfAllInputsAreFulfilled()) {
+      console.log(scores);
+      // updateRoundScores();
       updateScores();
+      startNewRound();
     }
   };
 
-  const updateRoundScores = () => {
-    players
+  const startNewRound = () => {
+    setScores({});
+    setCanSubmit(false);
+  };
+
+  const checkIfAllInputsAreFulfilled = () => {
+    return players
       .filter((player) => player.isPlaying)
-      .forEach((player) => {
-        const score = parseInt(getInputValue(player.id));
-        if (score === 0) {
-          setRoundWinner(player);
-        }
-        round.set(player.id, score);
+      .every((player) => {
+        const inputValue = scores[player.id];
+        return inputValue !== "" && inputValue !== null && !isNaN(inputValue);
       });
   };
+
+  // const updateRoundScores = () => {
+  //   players
+  //     .filter((player) => player.isPlaying)
+  //     .forEach((player) => {
+  //       const score = parseInt(getInputValue(player.id));
+  //       if (score === 0) {
+  //         setRoundWinner(player);
+  //       }
+  //       round.set(player.id, score);
+  //     });
+
+  //   console.log(roundWinner);
+  // };
 
   const getInputValue = (playerId) => {
     // Implement your logic to get input value using useRef or other React Native approach
@@ -46,15 +64,14 @@ const App = () => {
     players
       .filter((player) => player.isPlaying)
       .forEach((player) => {
-        addScore(player, round.get(player.id));
-        clearNewScoreField(player);
+        updatePlayerInfo(player, scores[player.id]);
       });
 
     setHighestTotal(getHighestValidTotal());
     updatePlayersThatExploded();
   };
 
-  const addScore = (player, score) => {
+  const updatePlayerInfo = (player, score) => {
     addPoints(player, score);
     updateTotal(player, score);
     updateScape(player);
@@ -65,7 +82,9 @@ const App = () => {
   };
 
   const updateTotal = (player, newScore) => {
-    player.total = player.total + newScore;
+    let total = player.points.forEach((point) => total + point);
+    console.log(total);
+
     if (player.total > 99) {
       if (player.hasExploded) {
         eliminatePlayer(player);
@@ -119,20 +138,11 @@ const App = () => {
       }, 0);
   };
 
-  const clearNewScoreField = (player) => {
-    // Implement your logic to clear input field
-    enableSubmitButton();
-  };
-
   const handleScoreChange = (playerId, score) => {
     setScores((prevScores) => ({
       ...prevScores,
       [playerId]: score,
     }));
-  };
-
-  const handleScoreBlur = () => {
-    enableSubmitButton();
   };
 
   const enableSubmitButton = () => {
@@ -205,7 +215,7 @@ const App = () => {
                 keyboardType="numeric"
                 placeholder="Enter score"
                 onChangeText={(text) => handleScoreChange(player.id, text)}
-                onBlur={handleScoreBlur}
+                onKeyPress={enableSubmitButton}
                 value={scores[player.id] || ""}
                 editable={player.isPlaying}
               />
