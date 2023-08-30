@@ -1,0 +1,49 @@
+{
+    "players": [
+      {
+        "id": "player1",
+        "name": "Israel",
+        "points": [],
+        "total": 0,
+        "scape": 99,
+        "hasExploded": false,
+        "hasExplodedWith": 0,
+        "isBackWith": 0,
+        "isPlaying": true
+      },
+      {
+        "id": "player2",
+        "name": "Gabrielle",
+        "points": [],
+        "total": 0,
+        "scape": 99,
+        "hasExploded": false,
+        "hasExplodedWith": 0,
+        "isBackWith": 0,
+        "isPlaying": true
+      },
+      {
+        "id": "player3",
+        "name": "Clarissa",
+        "points": [],
+        "total": 0,
+        "scape": 99,
+        "hasExploded": false,
+        "hasExplodedWith": 0,
+        "isBackWith": 0,
+        "isPlaying": true
+      },
+      {
+        "id": "player4",
+        "name": "Bernardo",
+        "points": [],
+        "total": 0,
+        "scape": 99,
+        "hasExploded": false,
+        "hasExplodedWith": 0,
+        "isBackWith": 0,
+        "isPlaying": true
+      }
+    ]
+  }
+  

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Pontinho",
-    "slug": "Pontinho",
+    "name": "pontinho",
+    "slug": "pontinho",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
