@@ -3,7 +3,7 @@
     {
       "id": "player1",
       "name": "Israel",
-      "points": [10, 20, 30],
+      "points": [],
       "total": 0,
       "scape": 99,
       "hasExploded": false,
@@ -14,7 +14,7 @@
     {
       "id": "player2",
       "name": "Gabrielle",
-      "points": [10, 20, 30],
+      "points": [],
       "total": 0,
       "scape": 99,
       "hasExploded": false,
@@ -25,7 +25,7 @@
     {
       "id": "player3",
       "name": "Clarissa",
-      "points": [10, 20, 30],
+      "points": [],
       "total": 0,
       "scape": 99,
       "hasExploded": false,
@@ -36,7 +36,7 @@
     {
       "id": "player4",
       "name": "Bernardo",
-      "points": [10, 20, 30],
+      "points": [],
       "total": 0,
       "scape": 99,
       "hasExploded": false,

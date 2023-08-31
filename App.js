@@ -14,17 +14,34 @@ const App = () => {
   const [roundNumber, setRoundNumber] = useState(1);
   const [round, setRound] = useState(new Map());
   const [canSubmit, setCanSubmit] = useState(false);
-  const [highestTotal, setHighestTotal] = useState(0);
+  const [biggestTotal, setBiggestTotal] = useState(0);
   const [roundWinner, setRoundWinner] = useState(null);
-  const [scores, setScores] = useState({}); // Store input values
+
+  const [scores, setScores] = useState({});
 
   const submitScores = () => {
-    if (canSubmit && checkIfAllInputsAreFulfilled()) {
-      console.log(scores);
-      // updateRoundScores();
-      updateScores();
+    if (checkIfRoundCanBeFinished()) {
+      updatePlayersInfo();
       startNewRound();
     }
+  };
+
+  const checkIfRoundCanBeFinished = () => {
+    return canSubmit && checkIfAllInputsAreFulfilled();
+  };
+
+  const checkIfAllInputsAreFulfilled = () => {
+    const validInputValues = players
+      .filter((player) => player.isPlaying)
+      .every((player) => {
+        return isInputValueValid(scores[player.id]);
+      });
+
+    return validInputValues;
+  };
+
+  const isInputValueValid = (inputValue) => {
+    return inputValue !== "" && inputValue !== null && !isNaN(inputValue);
   };
 
   const startNewRound = () => {
@@ -32,72 +49,43 @@ const App = () => {
     setCanSubmit(false);
   };
 
-  const checkIfAllInputsAreFulfilled = () => {
-    return players
-      .filter((player) => player.isPlaying)
-      .every((player) => {
-        const inputValue = scores[player.id];
-        return inputValue !== "" && inputValue !== null && !isNaN(inputValue);
-      });
-  };
-
-  // const updateRoundScores = () => {
-  //   players
-  //     .filter((player) => player.isPlaying)
-  //     .forEach((player) => {
-  //       const score = parseInt(getInputValue(player.id));
-  //       if (score === 0) {
-  //         setRoundWinner(player);
-  //       }
-  //       round.set(player.id, score);
-  //     });
-
-  //   console.log(roundWinner);
-  // };
-
-  const getInputValue = (playerId) => {
-    // Implement your logic to get input value using useRef or other React Native approach
-    return "";
-  };
-
-  const updateScores = () => {
+  const updatePlayersInfo = () => {
     players
       .filter((player) => player.isPlaying)
       .forEach((player) => {
-        updatePlayerInfo(player, scores[player.id]);
+        updatePoints(player);
+        updateTotal(player);
+        updateScape(player);
       });
 
-    setHighestTotal(getHighestValidTotal());
+    setBiggestTotal(getBiggestTotalThatScaped());
+    console.log("biggest valid total: " + biggestTotal);
     updatePlayersThatExploded();
   };
 
-  const updatePlayerInfo = (player, score) => {
-    addPoints(player, score);
-    updateTotal(player, score);
-    updateScape(player);
+  const updatePlayerInfo = (player, score) => {};
+
+  const updatePoints = (player) => {
+    player.points.push(scores[player.id]);
   };
 
-  const addPoints = (player, newScore) => {
-    player.points.push(newScore);
-  };
-
-  const updateTotal = (player, newScore) => {
-    let total = player.points.forEach((point) => total + point);
-    console.log(total);
-
+  const updateTotal = (player) => {
+    player.total = player.total + parseInt(scores[player.id]);
     if (player.total > 99) {
-      if (player.hasExploded) {
-        eliminatePlayer(player);
-        player.isPlaying = false;
-      }
-      player.hasExploded = true;
+      !player.hasExploded ? explodePlayer(player) : eliminatePlayer(player);
     }
   };
 
   const updateScape = (player) => {
-    if (player.isPlaying) {
-      player.scape = 99 - player.total;
-    }
+    player.scape = 99 - player.total;
+  };
+
+  const explodePlayer = (player) => {
+    player.hasExploded = false;
+  };
+
+  const eliminatePlayer = (player) => {
+    player.isPlaying = false;
   };
 
   const updatePlayersThatExploded = () => {
@@ -116,25 +104,23 @@ const App = () => {
     players
       .filter((player) => player.isPlaying)
       .filter((player) => player.total > 99)
-      .forEach((player) => explodePlayer(player));
+      .forEach((player) => updateExplodedPlayerInfo(player));
   };
 
-  const explodePlayer = (player) => {
+  const updatePlayer = () => {};
+
+  const updateExplodedPlayerInfo = (player) => {
     player.hasExplodedWith = player.total;
-    player.total = highestTotal;
+    player.total = biggestTotal;
     player.isBackWith = player.total;
     updateScape(player);
   };
 
-  const eliminatePlayer = (player) => {
-    player.isPlaying = false;
-  };
-
-  const getHighestValidTotal = () => {
+  const getBiggestTotalThatScaped = () => {
     return players
       .filter((player) => player.total <= 99)
-      .reduce((highestTotal, currentPlayer) => {
-        return Math.max(highestTotal, currentPlayer.total);
+      .reduce((biggestTotal, currentPlayer) => {
+        return Math.max(biggestTotal, currentPlayer.total);
       }, 0);
   };
 
