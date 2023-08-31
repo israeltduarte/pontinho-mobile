@@ -11,12 +11,7 @@ import data from "./api/data.json";
 
 const App = () => {
   const [players, setPlayers] = useState(data.players);
-  const [roundNumber, setRoundNumber] = useState(1);
-  const [round, setRound] = useState(new Map());
   const [canSubmit, setCanSubmit] = useState(false);
-  const [biggestTotal, setBiggestTotal] = useState(0);
-  const [roundWinner, setRoundWinner] = useState(null);
-
   const [scores, setScores] = useState({});
 
   const submitScores = () => {
@@ -58,19 +53,15 @@ const App = () => {
         updateScape(player);
       });
 
-    setBiggestTotal(getBiggestTotalThatScaped());
-    console.log("biggest valid total: " + biggestTotal);
     updatePlayersThatExploded();
   };
-
-  const updatePlayerInfo = (player, score) => {};
 
   const updatePoints = (player) => {
     player.points.push(scores[player.id]);
   };
 
   const updateTotal = (player) => {
-    player.total = player.total + parseInt(scores[player.id]);
+    player.total = player.total + Number(scores[player.id]);
     if (player.total > 99) {
       !player.hasExploded ? explodePlayer(player) : eliminatePlayer(player);
     }
@@ -81,16 +72,16 @@ const App = () => {
   };
 
   const explodePlayer = (player) => {
-    player.hasExploded = false;
+    player.hasExploded = true;
   };
 
   const eliminatePlayer = (player) => {
     player.isPlaying = false;
+    player.scape = "-";
   };
 
   const updatePlayersThatExploded = () => {
     const playingPlayers = players.filter((player) => player.isPlaying);
-
     const explodedPlayers = players
       .filter((player) => player.isPlaying)
       .filter((player) => player.total > 99);
@@ -107,11 +98,9 @@ const App = () => {
       .forEach((player) => updateExplodedPlayerInfo(player));
   };
 
-  const updatePlayer = () => {};
-
   const updateExplodedPlayerInfo = (player) => {
     player.hasExplodedWith = player.total;
-    player.total = biggestTotal;
+    player.total = getBiggestTotalThatScaped();
     player.isBackWith = player.total;
     updateScape(player);
   };
