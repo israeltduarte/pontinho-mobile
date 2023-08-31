@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import {
-  Button,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import data from "./api/data.json";
@@ -150,6 +150,17 @@ const App = () => {
       marginRight: 8,
       alignItems: "center",
     },
+    finishButton: {
+      padding: 6,
+      alignItems: "center",
+      color: "white",
+    },
+    activeBtn: {
+      backgroundColor: "#E61003",
+    },
+    inactiveBtn: {
+      backgroundColor: "#FF7771",
+    },
   });
 
   return (
@@ -163,18 +174,18 @@ const App = () => {
             <View
               key={index}
               style={{
-                borderColor: player.hasExploded ? "red" : "green",
+                backgroundColor: player.hasExploded ? "yellow" : "lightgreen",
                 padding: 8,
                 marginBottom: 8,
                 marginRight: 8,
-                flexDirection: "column", // Vertically align elements
+                flexDirection: "column",
                 borderWidth: 1,
                 alignItems: "center",
               }}
             >
               <Text>{player.name}</Text>
-              <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text>
-              <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text>
+              {/* <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text> */}
+              {/* <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text> */}
               {player.hasExploded && (
                 <View>
                   <Text>Estourou com: {player.hasExplodedWith}</Text>
@@ -198,11 +209,16 @@ const App = () => {
           ))}
         </View>
       </ScrollView>
-      <Button
-        title="Finalizar rodada"
+      <TouchableOpacity
+        style={[
+          styles.finishButton,
+          canSubmit ? styles.activeBtn : styles.inactiveBtn,
+        ]}
         onPress={submitScores}
         disabled={!canSubmit}
-      />
+      >
+        <Text style={styles.finishButton}>Finalizar rodada</Text>
+      </TouchableOpacity>
     </View>
   );
 };
