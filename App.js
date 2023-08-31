@@ -54,6 +54,7 @@ const App = () => {
       });
 
     updatePlayersThatExploded();
+    updatePlayersThatWereEliminated();
   };
 
   const updatePoints = (player) => {
@@ -82,6 +83,7 @@ const App = () => {
 
   const updatePlayersThatExploded = () => {
     const playingPlayers = players.filter((player) => player.isPlaying);
+
     const explodedPlayers = players
       .filter((player) => player.isPlaying)
       .filter((player) => player.total > 99);
@@ -96,6 +98,12 @@ const App = () => {
       .filter((player) => player.isPlaying)
       .filter((player) => player.total > 99)
       .forEach((player) => updateExplodedPlayerInfo(player));
+  };
+
+  const updatePlayersThatWereEliminated = () => {
+    players
+      .filter((player) => !player.isPlaying)
+      .forEach((player) => eliminatePlayer(player));
   };
 
   const updateExplodedPlayerInfo = (player) => {
@@ -161,6 +169,26 @@ const App = () => {
     inactiveBtn: {
       backgroundColor: "#FF7771",
     },
+    playerInfo: {
+      padding: 8,
+      marginBottom: 8,
+      marginRight: 8,
+      flexDirection: "column",
+      borderWidth: 1,
+      alignItems: "center",
+    },
+    hasExploded: {
+      backgroundColor: "yellow",
+    },
+    notExploded: {
+      backgroundColor: "green",
+    },
+    isPlaying: {
+      backgroundColor: "yellow",
+    },
+    notPlaying: {
+      backgroundColor: "red",
+    },
   });
 
   return (
@@ -173,25 +201,24 @@ const App = () => {
           {players.map((player, index) => (
             <View
               key={index}
-              style={{
-                backgroundColor: player.hasExploded ? "yellow" : "lightgreen",
-                padding: 8,
-                marginBottom: 8,
-                marginRight: 8,
-                flexDirection: "column",
-                borderWidth: 1,
-                alignItems: "center",
-              }}
+              style={[
+                styles.playerInfo,
+                player.isPlaying
+                  ? player.hasExploded
+                    ? styles.hasExploded
+                    : styles.notExploded
+                  : styles.notPlaying,
+              ]}
             >
               <Text>{player.name}</Text>
               {/* <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text> */}
               {/* <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text> */}
-              {player.hasExploded && (
+              {/* {player.hasExploded && (
                 <View>
                   <Text>Estourou com: {player.hasExplodedWith}</Text>
                   <Text>Voltou com: {player.isBackWith}</Text>
                 </View>
-              )}
+              )} */}
               <Text>Total: {player.total}</Text>
               <Text>Escape: {player.scape}</Text>
               {player.points.map((point, index) => (
