@@ -14,6 +14,20 @@ const App = () => {
   const [canSubmit, setCanSubmit] = useState(false);
   const [scores, setScores] = useState({});
 
+  const restartGame = () => {
+    console.log("restartGame");
+    players.forEach((player) => {
+      player.isPlaying = true;
+      player.points = [];
+      player.total = 0;
+      player.scape = 99;
+      player.hasExploded = false;
+      player.hasExplodedWith = 0;
+      player.isBackWith = 0;
+    });
+    console.log(players);
+  };
+
   const submitScores = () => {
     if (checkIfRoundCanBeFinished()) {
       updatePlayersInfo();
@@ -150,6 +164,7 @@ const App = () => {
     playersRow: {
       flexDirection: "row",
       marginBottom: 16,
+      marginTop: 20,
     },
     playerContainer: {
       flex: 1,
@@ -158,10 +173,19 @@ const App = () => {
       marginRight: 8,
       alignItems: "center",
     },
-    finishButton: {
-      padding: 6,
+
+    button: {
       alignItems: "center",
+      padding: 10,
+      marginBottom: 10,
+    },
+
+    finishRoundButton: {
       color: "white",
+    },
+    restartRoundButton: {
+      color: "white",
+      backgroundColor: "blue",
     },
     activeBtn: {
       backgroundColor: "#E61003",
@@ -169,6 +193,7 @@ const App = () => {
     inactiveBtn: {
       backgroundColor: "#FF7771",
     },
+
     playerInfo: {
       padding: 8,
       marginBottom: 8,
@@ -188,6 +213,9 @@ const App = () => {
     },
     notPlaying: {
       backgroundColor: "red",
+    },
+    playerTitle: {
+      fontSize: 20,
     },
   });
 
@@ -210,15 +238,7 @@ const App = () => {
                   : styles.notPlaying,
               ]}
             >
-              <Text>{player.name}</Text>
-              {/* <Text>{player.isPlaying ? "Jogando" : "Eliminado"}</Text> */}
-              {/* <Text>{player.hasExploded ? "Estourou" : "Não estourou"}</Text> */}
-              {/* {player.hasExploded && (
-                <View>
-                  <Text>Estourou com: {player.hasExplodedWith}</Text>
-                  <Text>Voltou com: {player.isBackWith}</Text>
-                </View>
-              )} */}
+              <Text style={styles.playerTitle}>{player.name}</Text>
               <Text>Total: {player.total}</Text>
               <Text>Escape: {player.scape}</Text>
               {player.points.map((point, index) => (
@@ -238,13 +258,19 @@ const App = () => {
       </ScrollView>
       <TouchableOpacity
         style={[
-          styles.finishButton,
+          styles.button,
           canSubmit ? styles.activeBtn : styles.inactiveBtn,
         ]}
         onPress={submitScores}
         disabled={!canSubmit}
       >
-        <Text style={styles.finishButton}>Finalizar rodada</Text>
+        <Text style={styles.finishRoundButton}>Finalizar rodada</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, styles.restartRoundButton]}
+        onPress={restartGame()}
+      >
+        <Text style={styles.restartRoundButton}>Novo Jogo</Text>
       </TouchableOpacity>
     </View>
   );
