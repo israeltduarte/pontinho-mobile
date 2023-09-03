@@ -68,8 +68,23 @@ const App = () => {
         updateScape(player);
       });
 
+    players
+      .filter((player) => !player.isPlaying)
+      .forEach((player) => {
+        fillPointsWithDash(player);
+      });
+
     updatePlayersThatExploded();
     updatePlayersThatWereEliminated();
+  };
+
+  const fillPointsWithDash = (player) => {
+    let pointsLength = players.filter((player) => player.isPlaying)[0].points
+      .length;
+
+    if (pointsLength > player.points.length) {
+      player.points.push("-");
+    }
   };
 
   const updatePoints = (player) => {
@@ -166,22 +181,25 @@ const App = () => {
         contentContainerStyle={styles.scrollViewContent}
         horizontal={true}
       >
-        <View style={PlayerStyle.playersRow}>
+        <View style={PlayerStyle.playerRow}>
           {players.map((player, index) => (
-            <View key={"playerSection" + index}>
+            <View
+              key={"playerSection" + index}
+              style={[PlayerStyle.playerColumn]}
+            >
               <View
                 key={"playerTitle" + index}
-                style={[PlayerStyle.playerTitleBox]}
+                style={[PlayerStyle.playerTitle]}
               >
-                <Text style={PlayerStyle.playerTitle}>{player.name}</Text>
+                <Text>{player.name}</Text>
               </View>
               <View
                 key={"playerInfo" + index}
                 style={[
                   PlayerStyle.playerInfo,
                   player.isPlaying
-                    ? ColorStyle.isPlaying
-                      ? ColorStyle.notPlaying
+                    ? player.hasExploded
+                      ? ColorStyle.hasExploded
                       : ColorStyle.notExploded
                     : ColorStyle.notPlaying,
                 ]}
@@ -192,8 +210,14 @@ const App = () => {
                   <Text key={"playerPoint" + index}>{point}</Text>
                 ))}
                 <TextInput
+                  style={[
+                    ButtonStyle.points,
+                    player.isPlaying
+                      ? ColorStyle.bgWhite
+                      : ButtonStyle.inactive,
+                  ]}
                   keyboardType="numeric"
-                  placeholder="Enter score"
+                  placeholder="0"
                   onChangeText={(text) => handleScoreChange(player.id, text)}
                   onKeyPress={enableSubmitButton}
                   value={scores[player.id] || ""}
@@ -207,18 +231,18 @@ const App = () => {
       <TouchableOpacity
         style={[
           ButtonStyle.btn,
-          canSubmit ? ColorStyle.activeBtn : ColorStyle.inactiveBtn,
+          canSubmit ? ButtonStyle.active : ButtonStyle.inactive,
         ]}
         onPress={submitScores}
         disabled={!canSubmit}
       >
-        <Text style={ColorStyle.finishBtn}>Finalizar rodada</Text>
+        <Text style={ButtonStyle.finish}>Finalizar rodada</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[ButtonStyle.btn, ColorStyle.restartBtn]}
+        style={[ButtonStyle.btn, ButtonStyle.restart]}
         onPress={restartGame}
       >
-        <Text style={ColorStyle.restartBtn}>Novo Jogo</Text>
+        <Text style={ButtonStyle.restart}>Novo Jogo</Text>
       </TouchableOpacity>
     </View>
   );
