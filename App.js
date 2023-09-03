@@ -51,7 +51,12 @@ const App = () => {
   };
 
   const isInputValueValid = (inputValue) => {
-    return inputValue !== "" && inputValue !== null && !isNaN(inputValue);
+    return (
+      inputValue !== "" &&
+      inputValue !== null &&
+      !isNaN(inputValue) &&
+      inputValue >= 0
+    );
   };
 
   const startNewRound = () => {
@@ -112,22 +117,23 @@ const App = () => {
   };
 
   const updatePlayersThatExploded = () => {
-    const playingPlayers = players.filter((player) => player.isPlaying);
-
-    const explodedPlayers = players
-      .filter((player) => player.isPlaying)
-      .filter((player) => player.total > 99);
-
-    if (explodedPlayers.length === playingPlayers.length - 1) {
-      explodedPlayers
-        .filter((player) => player.isPlaying)
-        .forEach((player) => eliminatePlayer(player));
-    }
-
+    checkIfSomeoneWonTheGame();
     players
       .filter((player) => player.isPlaying)
       .filter((player) => player.total > 99)
       .forEach((player) => updateExplodedPlayerInfo(player));
+  };
+
+  const checkIfSomeoneWonTheGame = () => {
+    const playingPlayers = players
+      .filter((player) => player.isPlaying)
+      .filter((player) => !player.hasExploded);
+
+    if (playingPlayers.length === 1) {
+      players
+        .filter((player) => player.hasExploded)
+        .forEach((player) => eliminatePlayer(player));
+    }
   };
 
   const updatePlayersThatWereEliminated = () => {
