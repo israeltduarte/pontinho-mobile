@@ -183,10 +183,7 @@ const App = () => {
 
   return (
     <View style={PlayerStyle.playerContainer}>
-      <ScrollView
-        contentContainerStyle={styles.scrollViewContent}
-        horizontal={true}
-      >
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={PlayerStyle.playerRow}>
           {players.map((player, index) => (
             <View

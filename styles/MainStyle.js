@@ -14,17 +14,20 @@ export const Colors = {
 export const PlayerStyle = StyleSheet.create({
   playerContainer: {
     flex: 1,
-    borderWidth: 1,
+    width: "100%",
     padding: 8,
     alignItems: "center",
   },
   playerRow: {
-    flexDirection: "row",
     marginBottom: 10,
     marginTop: 20,
+    justifyContent: "center",
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   playerColumn: {
     marginRight: 5,
+    width: "48%",
   },
   playerTitle: {
     alignItems: "center",
