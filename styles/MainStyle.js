@@ -1,14 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export const Colors = {
-  playing: "#a3dfa3",
-  notPlaying: "#FF7771",
-  exploded: "#f4f487",
-  notExploded: "#a3dfa3",
-  restart: "blue",
+  playing: "#A3DFA3",
+  notPlaying: "#F8BEBE",
+  exploded: "#F4F487",
+  notExploded: "#A3DFA3",
+  restart: "#6072FC",
   finish: "#FF7771",
   active: "#E61003",
-  inactive: "#FF7771",
+  inactive: "#F8BEBE",
 };
 
 export const PlayerStyle = StyleSheet.create({
