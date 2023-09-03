@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 import data from "./api/data.json";
+import { ButtonStyle, ColorStyle, PlayerStyle } from "./styles/MainStyle";
 
 const App = () => {
   const [players, setPlayers] = useState(data.players);
@@ -15,7 +16,6 @@ const App = () => {
   const [scores, setScores] = useState({});
 
   const restartGame = () => {
-    console.log("restartGame");
     players.forEach((player) => {
       player.isPlaying = true;
       player.points = [];
@@ -25,7 +25,8 @@ const App = () => {
       player.hasExplodedWith = 0;
       player.isBackWith = 0;
     });
-    console.log(players);
+
+    setScores({});
   };
 
   const submitScores = () => {
@@ -154,123 +155,70 @@ const App = () => {
   };
 
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 16,
-    },
     scrollViewContent: {
       flexGrow: 1,
-    },
-    playersRow: {
-      flexDirection: "row",
-      marginBottom: 16,
-      marginTop: 20,
-    },
-    playerContainer: {
-      flex: 1,
-      borderWidth: 1,
-      padding: 8,
-      marginRight: 8,
-      alignItems: "center",
-    },
-
-    button: {
-      alignItems: "center",
-      padding: 10,
-      marginBottom: 10,
-    },
-
-    finishRoundButton: {
-      color: "white",
-    },
-    restartRoundButton: {
-      color: "white",
-      backgroundColor: "blue",
-    },
-    activeBtn: {
-      backgroundColor: "#E61003",
-    },
-    inactiveBtn: {
-      backgroundColor: "#FF7771",
-    },
-
-    playerInfo: {
-      padding: 8,
-      marginBottom: 8,
-      marginRight: 8,
-      flexDirection: "column",
-      borderWidth: 1,
-      alignItems: "center",
-    },
-    hasExploded: {
-      backgroundColor: "yellow",
-    },
-    notExploded: {
-      backgroundColor: "green",
-    },
-    isPlaying: {
-      backgroundColor: "yellow",
-    },
-    notPlaying: {
-      backgroundColor: "red",
-    },
-    playerTitle: {
-      fontSize: 20,
     },
   });
 
   return (
-    <View style={styles.container}>
+    <View style={PlayerStyle.playerContainer}>
       <ScrollView
         contentContainerStyle={styles.scrollViewContent}
         horizontal={true}
       >
-        <View style={styles.playersRow}>
+        <View style={PlayerStyle.playersRow}>
           {players.map((player, index) => (
-            <View
-              key={index}
-              style={[
-                styles.playerInfo,
-                player.isPlaying
-                  ? player.hasExploded
-                    ? styles.hasExploded
-                    : styles.notExploded
-                  : styles.notPlaying,
-              ]}
-            >
-              <Text style={styles.playerTitle}>{player.name}</Text>
-              <Text>Total: {player.total}</Text>
-              <Text>Escape: {player.scape}</Text>
-              {player.points.map((point, index) => (
-                <Text key={index}>{point}</Text>
-              ))}
-              <TextInput
-                keyboardType="numeric"
-                placeholder="Enter score"
-                onChangeText={(text) => handleScoreChange(player.id, text)}
-                onKeyPress={enableSubmitButton}
-                value={scores[player.id] || ""}
-                editable={player.isPlaying}
-              />
+            <View key={"playerSection" + index}>
+              <View
+                key={"playerTitle" + index}
+                style={[PlayerStyle.playerTitleBox]}
+              >
+                <Text style={PlayerStyle.playerTitle}>{player.name}</Text>
+              </View>
+              <View
+                key={"playerInfo" + index}
+                style={[
+                  PlayerStyle.playerInfo,
+                  player.isPlaying
+                    ? ColorStyle.isPlaying
+                      ? ColorStyle.notPlaying
+                      : ColorStyle.notExploded
+                    : ColorStyle.notPlaying,
+                ]}
+              >
+                <Text>Total: {player.total}</Text>
+                <Text>Escape: {player.scape}</Text>
+                {player.points.map((point, index) => (
+                  <Text key={"playerPoint" + index}>{point}</Text>
+                ))}
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="Enter score"
+                  onChangeText={(text) => handleScoreChange(player.id, text)}
+                  onKeyPress={enableSubmitButton}
+                  value={scores[player.id] || ""}
+                  editable={player.isPlaying}
+                />
+              </View>
             </View>
           ))}
         </View>
       </ScrollView>
       <TouchableOpacity
         style={[
-          styles.button,
-          canSubmit ? styles.activeBtn : styles.inactiveBtn,
+          ButtonStyle.btn,
+          canSubmit ? ColorStyle.activeBtn : ColorStyle.inactiveBtn,
         ]}
         onPress={submitScores}
         disabled={!canSubmit}
       >
-        <Text style={styles.finishRoundButton}>Finalizar rodada</Text>
+        <Text style={ColorStyle.finishBtn}>Finalizar rodada</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, styles.restartRoundButton]}
-        onPress={restartGame()}
+        style={[ButtonStyle.btn, ColorStyle.restartBtn]}
+        onPress={restartGame}
       >
-        <Text style={styles.restartRoundButton}>Novo Jogo</Text>
+        <Text style={ColorStyle.restartBtn}>Novo Jogo</Text>
       </TouchableOpacity>
     </View>
   );
